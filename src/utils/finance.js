@@ -87,6 +87,20 @@ export function getBudgetUsage(budget, transactions, monthKey) {
   };
 }
 
+// Soma as compras parceladas representativas de um cartão — nunca lê a
+// fatura real do cartão, apenas os lançamentos manuais de compra
+// cadastrados pelo usuário (CLAUDE.md).
+export function getCardPurchasesSummary(purchases) {
+  return purchases.reduce(
+    (acc, purchase) => ({
+      count: acc.count + 1,
+      monthlyTotal: acc.monthlyTotal + (Number(purchase.monthlyAmount) || 0),
+      totalAmount: acc.totalAmount + (Number(purchase.totalAmount) || 0),
+    }),
+    { count: 0, monthlyTotal: 0, totalAmount: 0 }
+  );
+}
+
 export function getGoalProgress(goal) {
   if (!goal.targetAmount) return 0;
   return Math.min(100, Math.round((goal.currentAmount / goal.targetAmount) * 100));

@@ -61,9 +61,10 @@ export function createCard(input) {
     name: input.name?.trim() || "",
     brand: input.brand?.trim() || "",
     limit: Math.abs(Number(input.limit) || 0),
-    // Fatura atual: valor informado manualmente pelo usuário. Não é
-    // calculada a partir de movimentações reais do cartão.
-    currentInvoice: Math.abs(Number(input.currentInvoice) || 0),
+    // Fatura atual não é armazenada aqui: é sempre calculada a partir da
+    // soma das compras cadastradas para o cartão (services/cardPurchaseService.js
+    // + utils/finance.js -> getCardPurchasesSummary), nunca informada
+    // manualmente nem a partir de movimentações reais do cartão.
     closingDay: input.closingDay ? Number(input.closingDay) : null,
     dueDay: input.dueDay ? Number(input.dueDay) : null,
     color: input.color || "#6c5ce7",
@@ -80,7 +81,6 @@ export function update(id, patch) {
     const next = { ...a, ...patch };
     if (patch.initialBalance !== undefined) next.initialBalance = Math.abs(Number(patch.initialBalance) || 0);
     if (patch.limit !== undefined) next.limit = Math.abs(Number(patch.limit) || 0);
-    if (patch.currentInvoice !== undefined) next.currentInvoice = Math.abs(Number(patch.currentInvoice) || 0);
     if (patch.closingDay !== undefined) next.closingDay = patch.closingDay ? Number(patch.closingDay) : null;
     if (patch.dueDay !== undefined) next.dueDay = patch.dueDay ? Number(patch.dueDay) : null;
     return next;

@@ -12,7 +12,6 @@ export default function CardForm({ initialValue, onSubmit, onCancel }) {
   const [name, setName] = useState(initialValue?.name || "");
   const [brand, setBrand] = useState(initialValue?.brand || "");
   const [limit, setLimit] = useState(toAmountText(initialValue?.limit));
-  const [currentInvoice, setCurrentInvoice] = useState(toAmountText(initialValue?.currentInvoice));
   const [closingDay, setClosingDay] = useState(initialValue?.closingDay ? String(initialValue.closingDay) : "");
   const [dueDay, setDueDay] = useState(initialValue?.dueDay ? String(initialValue.dueDay) : "");
   const [color, setColor] = useState(initialValue?.color || "#6c5ce7");
@@ -21,27 +20,24 @@ export default function CardForm({ initialValue, onSubmit, onCancel }) {
   function validate() {
     const nextErrors = {};
     const parsedLimit = limit.trim() === "" ? 0 : parseCurrencyInput(limit);
-    const parsedInvoice = currentInvoice.trim() === "" ? 0 : parseCurrencyInput(currentInvoice);
 
     if (!name.trim()) nextErrors.name = "Nome é obrigatório.";
     if (!Number.isFinite(parsedLimit) || parsedLimit < 0) nextErrors.limit = "Informe um limite válido.";
-    if (!Number.isFinite(parsedInvoice) || parsedInvoice < 0) nextErrors.currentInvoice = "Informe um valor válido.";
     if (closingDay && (Number(closingDay) < 1 || Number(closingDay) > 31)) nextErrors.closingDay = "Dia entre 1 e 31.";
     if (dueDay && (Number(dueDay) < 1 || Number(dueDay) > 31)) nextErrors.dueDay = "Dia entre 1 e 31.";
 
     setErrors(nextErrors);
-    return { valid: Object.keys(nextErrors).length === 0, parsedLimit, parsedInvoice };
+    return { valid: Object.keys(nextErrors).length === 0, parsedLimit };
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    const { valid, parsedLimit, parsedInvoice } = validate();
+    const { valid, parsedLimit } = validate();
     if (!valid) return;
     onSubmit({
       name: name.trim(),
       brand: brand.trim(),
       limit: parsedLimit,
-      currentInvoice: parsedInvoice,
       closingDay: closingDay ? Number(closingDay) : null,
       dueDay: dueDay ? Number(dueDay) : null,
       color,
@@ -51,7 +47,9 @@ export default function CardForm({ initialValue, onSubmit, onCancel }) {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <p className="field-hint">
-        Cartão representativo — os dados são preenchidos e atualizados por você. Nenhuma cobrança ou fatura real é processada por esta plataforma.
+        Cartão representativo — os dados são preenchidos e atualizados por você. A fatura atual é calculada
+        automaticamente a partir das compras cadastradas na aba Compras; nenhuma cobrança real é processada por
+        esta plataforma.
       </p>
 
       <label>
@@ -70,12 +68,6 @@ export default function CardForm({ initialValue, onSubmit, onCancel }) {
         <input inputMode="decimal" value={limit} onChange={(e) => setLimit(e.target.value)} placeholder="0,00" />
       </label>
       {errors.limit && <p className="field-error">{errors.limit}</p>}
-
-      <label>
-        Fatura atual <span className="optional">(informada manualmente)</span>
-        <input inputMode="decimal" value={currentInvoice} onChange={(e) => setCurrentInvoice(e.target.value)} placeholder="0,00" />
-      </label>
-      {errors.currentInvoice && <p className="field-error">{errors.currentInvoice}</p>}
 
       <div className="form-grid-2">
         <label>

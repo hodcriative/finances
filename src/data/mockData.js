@@ -13,12 +13,32 @@ export const categories = [
 
 // `accounts` reúne contas e cartões representativos (docs/04-DATA-MODEL.md).
 // Nenhum dos dois se conecta a um banco real: são registros organizacionais
-// que o usuário mantém atualizados manualmente, incluindo a fatura dos
-// cartões (`currentInvoice`).
+// que o usuário mantém atualizados manualmente. A fatura do cartão não é
+// um campo próprio: é sempre calculada a partir da soma das compras
+// cadastradas para aquele cartão (ver `cardPurchases` abaixo).
 export const accounts = [
   { id: "conta-pessoal", name: "Conta Pessoal", kind: "account", type: "checking", initialBalance: 0, color: "#6c5ce7", active: true },
-  { id: "cartao-nubank", name: "Cartão Nubank", kind: "card", brand: "Mastercard", limit: 3500, currentInvoice: 866.8, closingDay: 28, dueDay: 5, color: "#820ad1", active: true },
-  { id: "cartao-pessoal", name: "Cartão Pessoal", kind: "card", brand: "Visa", limit: 2000, currentInvoice: 350, closingDay: 10, dueDay: 17, color: "#1a1f71", active: true },
+  { id: "cartao-nubank", name: "Cartão Nubank", kind: "card", brand: "Mastercard", limit: 3500, closingDay: 28, dueDay: 5, color: "#820ad1", active: true },
+  { id: "cartao-pessoal", name: "Cartão Pessoal", kind: "card", brand: "Visa", limit: 2000, closingDay: 10, dueDay: 17, color: "#1a1f71", active: true },
+];
+
+// Compras parceladas representativas, organizadas por cartão
+// (docs/04-DATA-MODEL.md). São lançamentos manuais de planejamento — não
+// representam cobranças reais nem são geradas a partir de movimentações
+// do cartão. `monthlyAmount` é o valor da parcela e `totalAmount` é
+// sempre `monthlyAmount * installments`.
+export const cardPurchases = [
+  {
+    id: "compra-ps5",
+    cardId: "cartao-nubank",
+    description: "PS5",
+    monthlyAmount: 250,
+    installments: 4,
+    totalAmount: 1000,
+    purchaseDate: "2026-08-15",
+    createdAt: "2026-08-15T12:00:00.000Z",
+    updatedAt: "2026-08-15T12:00:00.000Z",
+  },
 ];
 
 export const initialTransactions = [
