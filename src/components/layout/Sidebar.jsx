@@ -4,6 +4,8 @@ import {
   ReceiptText, WalletCards, X
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { usePreferences } from "../../app/PreferencesContext";
+import { useAlerts } from "../../hooks/useAlerts";
 
 const NAV_ITEMS = [
   ["/", "Dashboard", Home],
@@ -15,6 +17,14 @@ const NAV_ITEMS = [
 ];
 
 export default function Sidebar({ collapsed, setCollapsed }) {
+  const { preferences } = usePreferences();
+  const { alerts } = useAlerts({
+    includeBudget: preferences.notifyBudgetAlerts,
+    includeGoals: preferences.notifyGoalAlerts,
+  });
+  const alertsCount = alerts.length;
+  const initial = preferences.name?.trim()?.[0]?.toUpperCase() || "F";
+
   return (
     <aside className={`sidebar ${collapsed ? "collapsed" : ""}`}>
       <div className="brand">
@@ -43,7 +53,12 @@ export default function Sidebar({ collapsed, setCollapsed }) {
         <div className="nav-label nav-spacer">{!collapsed && "GERENCIAMENTO"}</div>
         <NavLink to="/alertas" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}>
           <Bell size={19} />
-          {!collapsed && <><span>Alertas</span><b className="notification-dot">3</b></>}
+          {!collapsed && (
+            <>
+              <span>Alertas</span>
+              {alertsCount > 0 && <b className="notification-dot">{alertsCount}</b>}
+            </>
+          )}
         </NavLink>
       </nav>
 
@@ -56,8 +71,8 @@ export default function Sidebar({ collapsed, setCollapsed }) {
         </NavLink>
         {!collapsed && (
           <div className="profile-mini">
-            <div className="avatar">F</div>
-            <div><strong>Fellipe R Vieira</strong><span>Conta pessoal</span></div>
+            <div className="avatar">{initial}</div>
+            <div><strong>{preferences.name}</strong><span>Conta pessoal</span></div>
             <ChevronRight size={16} />
           </div>
         )}

@@ -1,11 +1,8 @@
 import Header from "../../components/layout/Header";
 import EmptyState from "../../components/ui/EmptyState";
-import { useTransactions } from "../../hooks/useTransactions";
-import { useCategories } from "../../hooks/useCategories";
-import { useBudget } from "../../hooks/useBudget";
-import { useGoals } from "../../hooks/useGoals";
-import { getBudgetUsage, getBudgetAlerts, getGoalAlerts } from "../../utils/finance";
-import { currentMonthKey, monthYearLabel } from "../../utils/dates";
+import { useAlerts } from "../../hooks/useAlerts";
+import { usePreferences } from "../../app/PreferencesContext";
+import { monthYearLabel } from "../../utils/dates";
 
 const SEVERITY_ICON = { high: "⚠️", medium: "⏰", success: "✅" };
 
@@ -13,14 +10,12 @@ const SEVERITY_ICON = { high: "⚠️", medium: "⏰", success: "✅" };
 // metas) — nenhum alerta é armazenado ou gerado por movimentação real
 // (CLAUDE.md).
 export default function Alerts() {
-  const monthKey = currentMonthKey();
-  const { transactions } = useTransactions();
-  const { categories } = useCategories();
-  const { budget } = useBudget(monthKey);
-  const { goals } = useGoals();
-
-  const usage = getBudgetUsage(budget, transactions, monthKey);
-  const alerts = [...getBudgetAlerts(usage, categories), ...getGoalAlerts(goals)];
+  const { preferences } = usePreferences();
+  const { monthKey, alerts } = useAlerts({
+    includeBudget: preferences.notifyBudgetAlerts,
+    includeGoals: preferences.notifyGoalAlerts,
+  });
+  const someHidden = !preferences.notifyBudgetAlerts || !preferences.notifyGoalAlerts;
 
   return (
     <>
@@ -30,6 +25,16 @@ export default function Alerts() {
           Alertas calculados a partir do orçamento e das metas de {monthYearLabel(monthKey)} — nenhum dado extra é
           armazenado, tudo é recalculado a partir dos seus lançamentos, limites e metas.
         </p>
+        {someHidden && (
+          <p className="page-lead" style={{ marginTop: -10 }}>
+            {!preferences.notifyBudgetAlerts && !preferences.notifyGoalAlerts
+              ? "Alertas de orçamento e de metas estão ocultos nas suas preferências."
+              : !preferences.notifyBudgetAlerts
+              ? "Alertas de orçamento estão ocultos nas suas preferências."
+              : "Alertas de metas estão ocultos nas suas preferências."}{" "}
+            Ajuste isso em Configurações.
+          </p>
+        )}
 
         <section className="panel">
           <div className="panel-heading">

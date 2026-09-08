@@ -2,6 +2,13 @@
 // (docs/04-DATA-MODEL.md). Quando o backend for definido, estes dados
 // deixam de ser usados como seed e passam a vir da API.
 
+export const preferences = {
+  name: "Fellipe R Vieira",
+  theme: "light",
+  notifyBudgetAlerts: true,
+  notifyGoalAlerts: true,
+};
+
 export const categories = [
   { id: "alimentacao", name: "Alimentação", type: "expense", icon: "🍴", color: "#6c5ce7", active: true },
   { id: "casa", name: "Casa", type: "expense", icon: "🏠", color: "#00a878", active: true },

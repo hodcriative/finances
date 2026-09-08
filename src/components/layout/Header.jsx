@@ -1,4 +1,5 @@
 import { Bell, ChevronDown, Plus, Search } from "lucide-react";
+import { usePreferences } from "../../app/PreferencesContext";
 
 export default function Header({
   eyebrow,
@@ -9,6 +10,10 @@ export default function Header({
   onSearchChange,
   searchPlaceholder = "Buscar...",
 }) {
+  const { preferences } = usePreferences();
+  const initial = preferences.name?.trim()?.[0]?.toUpperCase() || "F";
+  const firstName = preferences.name?.trim()?.split(" ")[0] || "Fellipe";
+
   return (
     <header className="header">
       <div>
@@ -27,7 +32,7 @@ export default function Header({
           </div>
         )}
         <button className="icon-btn"><Bell size={19} /><i /></button>
-        <div className="user-menu"><div className="avatar">F</div><span>Fellipe</span><ChevronDown size={15} /></div>
+        <div className="user-menu"><div className="avatar">{initial}</div><span>{firstName}</span><ChevronDown size={15} /></div>
         {onNewTransaction && (
           <button className="primary-btn" onClick={onNewTransaction}>
             <Plus size={18} /> {newTransactionLabel}

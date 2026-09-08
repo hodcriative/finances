@@ -6,6 +6,7 @@
 @import "./pages/cards.css";
 @import "./pages/planning.css";
 @import "./pages/analytics.css";
+@import "./pages/settings.css";
 
 @media (max-width: 1150px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
