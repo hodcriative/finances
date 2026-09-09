@@ -9,6 +9,14 @@ import Alerts from "../pages/Alerts/Alerts";
 import Settings from "../pages/Settings/Settings";
 import Help from "../pages/Help/Help";
 import EmptyState from "../components/ui/EmptyState";
+import Auth from "../pages/Auth/Auth";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
+
+function Protected({ children }) {
+  const { user } = useAuth();
+  return user ? children : <Navigate to="/login" replace />;
+}
 
 function NotFound() {
   return (
@@ -21,16 +29,18 @@ function NotFound() {
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/transacoes" element={<Transactions />} />
-      <Route path="/analises" element={<Analytics />} />
-      <Route path="/orcamento" element={<Budget />} />
-      <Route path="/metas" element={<Goals />} />
-      <Route path="/cartoes" element={<Cards />} />
-      <Route path="/alertas" element={<Alerts />} />
-      <Route path="/configuracoes" element={<Settings />} />
-      <Route path="/ajuda" element={<Help />} />
+      <Route path="/login" element={<Auth mode="login" />} />
+      <Route path="/cadastro" element={<Auth mode="register" />} />
+      <Route path="/" element={<Protected><Dashboard /></Protected>} />
+      <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
+      <Route path="/transacoes" element={<Protected><Transactions /></Protected>} />
+      <Route path="/analises" element={<Protected><Analytics /></Protected>} />
+      <Route path="/orcamento" element={<Protected><Budget /></Protected>} />
+      <Route path="/metas" element={<Protected><Goals /></Protected>} />
+      <Route path="/cartoes" element={<Protected><Cards /></Protected>} />
+      <Route path="/alertas" element={<Protected><Alerts /></Protected>} />
+      <Route path="/configuracoes" element={<Protected><Settings /></Protected>} />
+      <Route path="/ajuda" element={<Protected><Help /></Protected>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

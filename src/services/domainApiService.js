@@ -1,0 +1,12 @@
+import { request } from "./apiClient";
+
+const purchasesFromApi = (items) => items.map((item) => ({ ...item, monthlyAmount: item.installmentAmount }));
+const purchaseToApi = ({ monthlyAmount, ...input }) => ({ ...input, installmentAmount: monthlyAmount });
+
+export const transactions = { all: () => request("/transactions"), create: (data) => request("/transactions", { method: "POST", body: data }), update: (id, data) => request(`/transactions/${id}`, { method: "PATCH", body: data }), remove: (id) => request(`/transactions/${id}`, { method: "DELETE" }) };
+export const categories = { all: () => request("/categories"), create: (data) => request("/categories", { method: "POST", body: data }), update: (id, data) => request(`/categories/${id}`, { method: "PATCH", body: data }), remove: (id) => request(`/categories/${id}`, { method: "DELETE" }) };
+export const accounts = { all: () => request("/accounts"), create: (data) => request("/accounts", { method: "POST", body: data }), update: (id, data) => request(`/accounts/${id}`, { method: "PATCH", body: data }), remove: (id) => request(`/accounts/${id}`, { method: "DELETE" }) };
+export const purchases = { all: async () => purchasesFromApi(await request("/card-purchases")), create: async (data) => ({ ...(await request("/card-purchases", { method: "POST", body: purchaseToApi(data) })), monthlyAmount: data.monthlyAmount }), update: async (id, data) => ({ ...(await request(`/card-purchases/${id}`, { method: "PATCH", body: purchaseToApi(data) })), monthlyAmount: data.monthlyAmount }), remove: (id) => request(`/card-purchases/${id}`, { method: "DELETE" }) };
+export const budgets = { get: (month) => request(`/budgets/${month}`), total: (month, totalLimit) => request(`/budgets/${month}/total-limit`, { method: "PUT", body: { totalLimit } }), category: (month, categoryId, limit) => request(`/budgets/${month}/categories/${categoryId}`, { method: "PUT", body: { limit } }), removeCategory: (month, categoryId) => request(`/budgets/${month}/categories/${categoryId}`, { method: "DELETE" }) };
+export const goals = { all: () => request("/goals"), create: (data) => request("/goals", { method: "POST", body: data }), update: (id, data) => request(`/goals/${id}`, { method: "PATCH", body: data }), contribute: (id, amount) => request(`/goals/${id}/contribute`, { method: "POST", body: { amount } }), remove: (id) => request(`/goals/${id}`, { method: "DELETE" }) };
+export const preferences = { get: () => request("/preferences"), update: (data) => request("/preferences", { method: "PATCH", body: data }) };

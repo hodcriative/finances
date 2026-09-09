@@ -13,8 +13,13 @@ import budgetsRoutes from "./routes/budgets.js";
 import goalsRoutes from "./routes/goals.js";
 
 const app = express();
-
-app.use(cors({ origin: process.env.CORS_ORIGIN || "http://localhost:5173" }));
+// Aceita mais de uma origem local (separadas por vÃ­rgula), pois o Vite usa
+// a prÃ³xima porta livre quando jÃ¡ existe outro servidor de desenvolvimento.
+const corsOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+app.use(cors({ origin: corsOrigins }));
 app.use(express.json());
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));

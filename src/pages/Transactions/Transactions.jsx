@@ -57,18 +57,18 @@ export default function Transactions() {
   const totalIncome = getTotalIncome(filtered);
   const totalExpenses = getTotalExpenses(filtered);
 
-  function handleSubmit(data) {
+  async function handleSubmit(data) {
     if (modalState?.mode === "edit") {
-      editTransaction(modalState.transaction.id, data);
+      await editTransaction(modalState.transaction.id, data);
     } else {
-      addTransaction(data);
+      await addTransaction(data);
     }
     setModalState(null);
   }
 
-  function handleDelete(transaction) {
+  async function handleDelete(transaction) {
     const confirmed = window.confirm(`Excluir o lançamento "${transaction.description}"? Esta ação não pode ser desfeita.`);
-    if (confirmed) deleteTransaction(transaction.id);
+    if (confirmed) await deleteTransaction(transaction.id);
   }
 
   const hasFilters = search || period !== "all" || type !== "all" || categoryId !== "all" || accountId !== "all";

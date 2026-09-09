@@ -6,6 +6,7 @@ import {
 import { NavLink } from "react-router-dom";
 import { usePreferences } from "../../app/PreferencesContext";
 import { useAlerts } from "../../hooks/useAlerts";
+import { useAuth } from "../../app/AuthContext";
 
 const NAV_ITEMS = [
   ["/", "Dashboard", Home],
@@ -18,6 +19,7 @@ const NAV_ITEMS = [
 
 export default function Sidebar({ collapsed, setCollapsed }) {
   const { preferences } = usePreferences();
+  const { logout } = useAuth();
   const { alerts } = useAlerts({
     includeBudget: preferences.notifyBudgetAlerts,
     includeGoals: preferences.notifyGoalAlerts,
@@ -70,11 +72,11 @@ export default function Sidebar({ collapsed, setCollapsed }) {
           <CircleHelp size={19} />{!collapsed && <span>Ajuda</span>}
         </NavLink>
         {!collapsed && (
-          <div className="profile-mini">
+          <button type="button" className="profile-mini" onClick={logout} title="Encerrar sess\u00e3o">
             <div className="avatar">{initial}</div>
-            <div><strong>{preferences.name}</strong><span>Conta pessoal</span></div>
+            <div><strong>{preferences.name}</strong><span>Sair da conta</span></div>
             <ChevronRight size={16} />
-          </div>
+          </button>
         )}
       </div>
     </aside>

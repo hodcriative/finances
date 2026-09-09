@@ -58,8 +58,8 @@ export default function Dashboard() {
     setSelectedMonth(monthKeyOffset(-1, new Date(y, m - 1, 1)));
   }
 
-  function handleCreate(data) {
-    addTransaction(data);
+  async function handleCreate(data) {
+    await addTransaction(data);
     setModalOpen(false);
   }
 

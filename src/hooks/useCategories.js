@@ -1,32 +1,33 @@
-import { useCallback, useState } from "react";
-import * as categoryService from "../services/categoryService";
+import { useCallback, useEffect, useState } from "react";
+import { categories as categoryService } from "../services/domainApiService";
 
 // Estado central do domínio de categorias, no mesmo padrão de
 // useTransactions.js, para manter Transações, Dashboard e a tela de
 // Categorias sincronizadas.
 export function useCategories() {
-  const [categories, setCategories] = useState(() => categoryService.getAll());
+  const [categories, setCategories] = useState([]);
+  useEffect(() => { categoryService.all().then(setCategories).catch(console.error); }, []);
 
-  const addCategory = useCallback((input) => {
-    const created = categoryService.create(input);
+  const addCategory = useCallback(async (input) => {
+    const created = await categoryService.create(input);
     setCategories((prev) => [...prev, created]);
     return created;
   }, []);
 
-  const editCategory = useCallback((id, patch) => {
-    const updated = categoryService.update(id, patch);
+  const editCategory = useCallback(async (id, patch) => {
+    const updated = await categoryService.update(id, patch);
     setCategories((prev) => prev.map((c) => (c.id === id ? updated : c)));
     return updated;
   }, []);
 
-  const deactivateCategory = useCallback((id) => {
-    const updated = categoryService.deactivate(id);
+  const deactivateCategory = useCallback(async (id) => {
+    const updated = await categoryService.update(id, { active: false });
     setCategories((prev) => prev.map((c) => (c.id === id ? updated : c)));
     return updated;
   }, []);
 
-  const deleteCategory = useCallback((id) => {
-    categoryService.remove(id);
+  const deleteCategory = useCallback(async (id) => {
+    await categoryService.remove(id);
     setCategories((prev) => prev.filter((c) => c.id !== id));
   }, []);
 

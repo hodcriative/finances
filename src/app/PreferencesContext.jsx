@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
-import * as preferencesService from "../services/preferencesService";
+import { preferences as preferencesService } from "../services/domainApiService";
 
 // Diferente dos outros domínios (contas, categorias, orçamento...), que
 // usam um hook local por página lendo do localStorage a cada montagem,
@@ -9,7 +9,11 @@ import * as preferencesService from "../services/preferencesService";
 const PreferencesContext = createContext(null);
 
 export function PreferencesProvider({ children }) {
-  const [preferences, setPreferences] = useState(() => preferencesService.get());
+  const [preferences, setPreferences] = useState({ name: "", theme: "light", notifyBudgetAlerts: true, notifyGoalAlerts: true });
+
+  useEffect(() => {
+    preferencesService.get().then(setPreferences).catch(console.error);
+  }, []);
 
   // Aplica o tema no elemento raiz para que os tokens de `tokens.css`
   // (bloco `[data-theme="dark"]`) sejam usados em toda a aplicação.
@@ -17,8 +21,8 @@ export function PreferencesProvider({ children }) {
     document.documentElement.dataset.theme = preferences.theme === "dark" ? "dark" : "light";
   }, [preferences.theme]);
 
-  const updatePreferences = useCallback((patch) => {
-    const updated = preferencesService.update(patch);
+  const updatePreferences = useCallback(async (patch) => {
+    const updated = await preferencesService.update(patch);
     setPreferences(updated);
     return updated;
   }, []);

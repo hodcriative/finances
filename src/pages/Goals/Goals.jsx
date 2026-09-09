@@ -19,24 +19,24 @@ export default function Goals() {
     setModalState(null);
   }
 
-  function handleSubmitForm(data) {
-    if (modalState.mode === "edit") editGoal(modalState.goal.id, data);
-    else addGoal(data);
+  async function handleSubmitForm(data) {
+    if (modalState.mode === "edit") await editGoal(modalState.goal.id, data);
+    else await addGoal(data);
     closeModal();
   }
 
-  function handleContribute(amount) {
-    contributeToGoal(modalState.goal.id, amount);
+  async function handleContribute(amount) {
+    await contributeToGoal(modalState.goal.id, amount);
     closeModal();
   }
 
-  function handleTogglePause(goal) {
-    setGoalStatus(goal.id, goal.status === "paused" ? "active" : "paused");
+  async function handleTogglePause(goal) {
+    await setGoalStatus(goal.id, goal.status === "paused" ? "active" : "paused");
   }
 
-  function handleDelete(goal) {
+  async function handleDelete(goal) {
     const confirmed = window.confirm(`Excluir a meta "${goal.title}"? Esta ação não pode ser desfeita.`);
-    if (confirmed) deleteGoal(goal.id);
+    if (confirmed) await deleteGoal(goal.id);
   }
 
   return (

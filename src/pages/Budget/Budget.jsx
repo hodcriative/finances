@@ -78,20 +78,20 @@ export default function Budget() {
     setModalState(null);
   }
 
-  function handleSaveTotal(value) {
-    saveTotalLimit(value);
+  async function handleSaveTotal(value) {
+    await saveTotalLimit(value);
     closeModal();
   }
 
-  function handleSaveCategory(data) {
-    saveCategoryLimit(data.categoryId, data.limit);
+  async function handleSaveCategory(data) {
+    await saveCategoryLimit(data.categoryId, data.limit);
     closeModal();
   }
 
-  function handleDeleteCategory(entry) {
+  async function handleDeleteCategory(entry) {
     const category = categories.find((c) => c.id === entry.categoryId);
     const confirmed = window.confirm(`Remover o limite definido para "${category?.name || "esta categoria"}"?`);
-    if (confirmed) removeCategoryLimit(entry.categoryId);
+    if (confirmed) await removeCategoryLimit(entry.categoryId);
   }
 
   return (

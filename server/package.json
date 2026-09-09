@@ -6,7 +6,8 @@
   "description": "API do FINANCE (Fase 6) — Node.js + Express + SQLite (node:sqlite), autenticação por e-mail/senha com JWT.",
   "scripts": {
     "dev": "node --watch src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test:security": "node scripts/security-smoke.mjs"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

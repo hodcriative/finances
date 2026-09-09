@@ -2,9 +2,13 @@ import { useState } from "react";
 import Sidebar from "../components/layout/Sidebar";
 import AppRoutes from "./routes";
 import { PreferencesProvider } from "./PreferencesContext";
+import { AuthProvider, useAuth } from "./AuthContext";
 
-export default function App() {
+function AppContent() {
   const [collapsed, setCollapsed] = useState(false);
+  const { user, loading } = useAuth();
+  if (loading) return <main className="auth-page">Carregando...</main>;
+  if (!user) return <AppRoutes />;
   return (
     <PreferencesProvider>
       <div className="app-shell">
@@ -13,4 +17,8 @@ export default function App() {
       </div>
     </PreferencesProvider>
   );
+}
+
+export default function App() {
+  return <AuthProvider><AppContent /></AuthProvider>;
 }

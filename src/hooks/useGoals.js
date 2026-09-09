@@ -1,36 +1,37 @@
-import { useCallback, useState } from "react";
-import * as goalService from "../services/goalService";
+import { useCallback, useEffect, useState } from "react";
+import { goals as goalService } from "../services/domainApiService";
 
 export function useGoals() {
-  const [goals, setGoals] = useState(() => goalService.getAll());
+  const [goals, setGoals] = useState([]);
+  useEffect(() => { goalService.all().then(setGoals).catch(console.error); }, []);
 
-  const addGoal = useCallback((input) => {
-    const created = goalService.create(input);
+  const addGoal = useCallback(async (input) => {
+    const created = await goalService.create(input);
     setGoals((prev) => [...prev, created]);
     return created;
   }, []);
 
-  const editGoal = useCallback((id, patch) => {
-    const updated = goalService.update(id, patch);
+  const editGoal = useCallback(async (id, patch) => {
+    const updated = await goalService.update(id, patch);
     setGoals((prev) => prev.map((g) => (g.id === id ? updated : g)));
     return updated;
   }, []);
 
   // Aporte é registro/planejamento de progresso, nunca transferência real.
-  const contributeToGoal = useCallback((id, amount) => {
-    const updated = goalService.addContribution(id, amount);
+  const contributeToGoal = useCallback(async (id, amount) => {
+    const updated = await goalService.contribute(id, amount);
     setGoals((prev) => prev.map((g) => (g.id === id ? updated : g)));
     return updated;
   }, []);
 
-  const setGoalStatus = useCallback((id, status) => {
-    const updated = goalService.setStatus(id, status);
+  const setGoalStatus = useCallback(async (id, status) => {
+    const updated = await goalService.update(id, { status });
     setGoals((prev) => prev.map((g) => (g.id === id ? updated : g)));
     return updated;
   }, []);
 
-  const deleteGoal = useCallback((id) => {
-    goalService.remove(id);
+  const deleteGoal = useCallback(async (id) => {
+    await goalService.remove(id);
     setGoals((prev) => prev.filter((g) => g.id !== id));
   }, []);
 

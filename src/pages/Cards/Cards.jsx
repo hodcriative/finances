@@ -48,19 +48,19 @@ export default function Cards() {
     setConfirmDialog(null);
   }
 
-  function handleSubmit(data) {
+  async function handleSubmit(data) {
     if (modalState.domain === "card") {
-      if (modalState.mode === "edit") editAccount(modalState.record.id, data);
-      else addCard(data);
+      if (modalState.mode === "edit") await editAccount(modalState.record.id, data);
+      else await addCard(data);
     } else if (modalState.domain === "account") {
-      if (modalState.mode === "edit") editAccount(modalState.record.id, data);
-      else addAccount(data);
+      if (modalState.mode === "edit") await editAccount(modalState.record.id, data);
+      else await addAccount(data);
     } else if (modalState.domain === "category") {
-      if (modalState.mode === "edit") editCategory(modalState.record.id, data);
-      else addCategory(data);
+      if (modalState.mode === "edit") await editCategory(modalState.record.id, data);
+      else await addCategory(data);
     } else if (modalState.domain === "purchase") {
-      if (modalState.mode === "edit") editPurchase(modalState.record.id, data);
-      else addPurchase(data);
+      if (modalState.mode === "edit") await editPurchase(modalState.record.id, data);
+      else await addPurchase(data);
       if (data.cardId) setSelectedCardId(data.cardId);
     }
     closeModal();
