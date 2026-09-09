@@ -6,7 +6,6 @@ import {
 import { NavLink } from "react-router-dom";
 import { usePreferences } from "../../app/PreferencesContext";
 import { useAlerts } from "../../hooks/useAlerts";
-import { useAuth } from "../../app/AuthContext";
 
 const NAV_ITEMS = [
   ["/", "Dashboard", Home],
@@ -17,9 +16,8 @@ const NAV_ITEMS = [
   ["/cartoes", "Cartões", CreditCard],
 ];
 
-export default function Sidebar({ collapsed, setCollapsed }) {
+export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) {
   const { preferences } = usePreferences();
-  const { logout } = useAuth();
   const { alerts } = useAlerts({
     includeBudget: preferences.notifyBudgetAlerts,
     includeGoals: preferences.notifyGoalAlerts,
@@ -28,13 +26,13 @@ export default function Sidebar({ collapsed, setCollapsed }) {
   const initial = preferences.name?.trim()?.[0]?.toUpperCase() || "F";
 
   return (
-    <aside className={`sidebar ${collapsed ? "collapsed" : ""}`}>
+    <aside className={`sidebar ${collapsed ? "collapsed" : ""} ${mobileOpen ? "mobile-open" : ""}`}>
       <div className="brand">
         <div className="brand-mark">F</div>
         {!collapsed && <div><strong>FINANCE</strong><span>Seu dinheiro, organizado.</span></div>}
       </div>
 
-      <button className="collapse-btn" onClick={() => setCollapsed(!collapsed)} aria-label="Alternar menu">
+      <button className="collapse-btn" onClick={() => { if (window.innerWidth <= 850) setMobileOpen(false); else setCollapsed(!collapsed); }} aria-label="Alternar menu" title="Alternar menu">
         {collapsed ? <Menu size={18} /> : <X size={18} />}
       </button>
 
@@ -72,11 +70,11 @@ export default function Sidebar({ collapsed, setCollapsed }) {
           <CircleHelp size={19} />{!collapsed && <span>Ajuda</span>}
         </NavLink>
         {!collapsed && (
-          <button type="button" className="profile-mini" onClick={logout} title="Encerrar sess\u00e3o">
+          <div className="profile-mini" title="Gerencie sua conta em Configurações">
             <div className="avatar">{initial}</div>
-            <div><strong>{preferences.name}</strong><span>Sair da conta</span></div>
+            <div><strong>{preferences.name || "Seu perfil"}</strong><span>Conta e preferências</span></div>
             <ChevronRight size={16} />
-          </button>
+          </div>
         )}
       </div>
     </aside>

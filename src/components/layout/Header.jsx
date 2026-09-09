@@ -1,4 +1,4 @@
-import { Bell, ChevronDown, Plus, Search } from "lucide-react";
+import { Bell, ChevronDown, Menu, Plus, Search } from "lucide-react";
 import { usePreferences } from "../../app/PreferencesContext";
 
 export default function Header({
@@ -9,6 +9,7 @@ export default function Header({
   search,
   onSearchChange,
   searchPlaceholder = "Buscar...",
+  onMobileMenu,
 }) {
   const { preferences } = usePreferences();
   const initial = preferences.name?.trim()?.[0]?.toUpperCase() || "F";
@@ -16,9 +17,12 @@ export default function Header({
 
   return (
     <header className="header">
-      <div>
-        <span className="eyebrow">{eyebrow}</span>
-        <h1>{title}</h1>
+      <div className="header-title">
+        {onMobileMenu && <button className="mobile-menu-btn" onClick={onMobileMenu} aria-label="Abrir menu"><Menu size={20} /></button>}
+        <div>
+          <span className="eyebrow">{eyebrow}</span>
+          <h1>{title}</h1>
+        </div>
       </div>
       <div className="header-actions">
         {onSearchChange && (

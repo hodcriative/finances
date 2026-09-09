@@ -25,7 +25,7 @@ const TABS = [
   { id: "categories", label: "Categorias" },
 ];
 
-export default function Cards() {
+export default function Cards({ onMobileMenu }) {
   const [tab, setTab] = useState("cards");
   const { cards, bankAccounts, addCard, addAccount, editAccount, deactivateAccount, deleteAccount } = useAccounts();
   const { categories, addCategory, editCategory, deactivateCategory, deleteCategory } = useCategories();
@@ -126,7 +126,7 @@ export default function Cards() {
 
   return (
     <>
-      <Header eyebrow="DOMÍNIOS DE APOIO" title="Cartões, contas e categorias" />
+      <Header eyebrow="DOMÍNIOS DE APOIO" title="Cartões, contas e categorias"  onMobileMenu={onMobileMenu} />
       <main className="content">
         <p className="page-lead">
           Cartões e contas aqui são registros representativos, atualizados manualmente por você — nenhuma cobrança,

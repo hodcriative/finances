@@ -26,21 +26,21 @@ function NotFound() {
   );
 }
 
-export default function AppRoutes() {
+export default function AppRoutes({ onMobileMenu }) {
   return (
     <Routes>
       <Route path="/login" element={<Auth mode="login" />} />
       <Route path="/cadastro" element={<Auth mode="register" />} />
-      <Route path="/" element={<Protected><Dashboard /></Protected>} />
-      <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
-      <Route path="/transacoes" element={<Protected><Transactions /></Protected>} />
-      <Route path="/analises" element={<Protected><Analytics /></Protected>} />
-      <Route path="/orcamento" element={<Protected><Budget /></Protected>} />
-      <Route path="/metas" element={<Protected><Goals /></Protected>} />
-      <Route path="/cartoes" element={<Protected><Cards /></Protected>} />
-      <Route path="/alertas" element={<Protected><Alerts /></Protected>} />
-      <Route path="/configuracoes" element={<Protected><Settings /></Protected>} />
-      <Route path="/ajuda" element={<Protected><Help /></Protected>} />
+      <Route path="/" element={<Protected><Dashboard onMobileMenu={onMobileMenu} /></Protected>} />
+      <Route path="/dashboard" element={<Protected><Dashboard onMobileMenu={onMobileMenu} /></Protected>} />
+      <Route path="/transacoes" element={<Protected><Transactions onMobileMenu={onMobileMenu} /></Protected>} />
+      <Route path="/analises" element={<Protected><Analytics onMobileMenu={onMobileMenu} /></Protected>} />
+      <Route path="/orcamento" element={<Protected><Budget onMobileMenu={onMobileMenu} /></Protected>} />
+      <Route path="/metas" element={<Protected><Goals onMobileMenu={onMobileMenu} /></Protected>} />
+      <Route path="/cartoes" element={<Protected><Cards onMobileMenu={onMobileMenu} /></Protected>} />
+      <Route path="/alertas" element={<Protected><Alerts onMobileMenu={onMobileMenu} /></Protected>} />
+      <Route path="/configuracoes" element={<Protected><Settings onMobileMenu={onMobileMenu} /></Protected>} />
+      <Route path="/ajuda" element={<Protected><Help onMobileMenu={onMobileMenu} /></Protected>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

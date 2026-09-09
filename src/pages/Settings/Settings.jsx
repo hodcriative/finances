@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Save } from "lucide-react";
+import { LogOut, Monitor, Smartphone, Save } from "lucide-react";
 import Header from "../../components/layout/Header";
 import { usePreferences } from "../../app/PreferencesContext";
+import { useAuth } from "../../app/AuthContext";
 
 const THEME_OPTIONS = [
   { value: "light", label: "Claro" },
@@ -24,8 +25,12 @@ const FUTURE_ITEMS = [
   },
 ];
 
-export default function Settings() {
+export default function Settings({ onMobileMenu }) {
   const { preferences, updatePreferences } = usePreferences();
+  const { logout } = useAuth();
+  const [desktopCompact, setDesktopCompact] = useState(
+    () => localStorage.getItem("finance:desktop-sidebar") === "compact"
+  );
   const [name, setName] = useState(preferences.name);
   const [nameError, setNameError] = useState("");
 
@@ -41,7 +46,7 @@ export default function Settings() {
 
   return (
     <>
-      <Header eyebrow="CONFIGURAÇÕES" title="Configurações" />
+      <Header eyebrow="CONFIGURAÇÕES" title="Configurações"  onMobileMenu={onMobileMenu} />
       <main className="content">
         <p className="page-lead">
           Preferências salvas apenas neste navegador — ainda não há login nem sincronização entre dispositivos (isso
@@ -114,6 +119,67 @@ export default function Settings() {
               Essas preferências controlam o que aparece na página Alertas e o indicador de notificações no menu
               lateral — nenhum alerta é enviado por e-mail, push ou SMS.
             </p>
+          </div>
+        </section>
+
+        <section className="panel settings-responsive-panel">
+          <div className="panel-heading">
+            <div>
+              <h2>Responsividade</h2>
+              <p>O layout se adapta automaticamente ao tamanho da tela.</p>
+            </div>
+          </div>
+          <div className="responsive-settings">
+            <div className="responsive-option">
+              <div className="responsive-option-icon"><Monitor size={19} /></div>
+              <div className="responsive-option-copy">
+                <strong>Desktop</strong>
+                <span>Escolha como a barra lateral deve aparecer em telas maiores.</span>
+              </div>
+              <select
+                value={desktopCompact ? "compact" : "expanded"}
+                onChange={(e) => {
+                  const compact = e.target.value === "compact";
+                  setDesktopCompact(compact);
+                  localStorage.setItem("finance:desktop-sidebar", compact ? "compact" : "expanded");
+                  window.dispatchEvent(new Event("finance:layout-change"));
+                }}
+                aria-label="Layout da barra lateral no desktop"
+              >
+                <option value="expanded">Expandida</option>
+                <option value="compact">Compacta</option>
+              </select>
+            </div>
+            <div className="responsive-option">
+              <div className="responsive-option-icon"><Smartphone size={19} /></div>
+              <div className="responsive-option-copy">
+                <strong>Mobile</strong>
+                <span>Menu lateral vira um painel deslizante, com conteúdo em largura total.</span>
+              </div>
+              <span className="responsive-badge">Automático</span>
+            </div>
+          </div>
+          <p className="field-hint responsive-hint">
+            Em celulares e tablets, cards, formulários, gráficos e listas reorganizam suas colunas para evitar
+            rolagem horizontal. No desktop, o conteúdo aproveita telas largas sem perder legibilidade.
+          </p>
+        </section>
+
+        <section className="panel settings-danger-panel">
+          <div className="panel-heading">
+            <div>
+              <h2>Conta</h2>
+              <p>Gerencie sua sessão neste dispositivo.</p>
+            </div>
+          </div>
+          <div className="account-action">
+            <div>
+              <strong>Sair da conta</strong>
+              <span>Encerra sua sessão atual e retorna para a tela de login.</span>
+            </div>
+            <button type="button" className="danger-outline-btn" onClick={logout}>
+              <LogOut size={17} /> Sair da conta
+            </button>
           </div>
         </section>
 

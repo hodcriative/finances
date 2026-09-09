@@ -43,7 +43,7 @@ function downloadCsv(monthKey, transactions, categories, accounts) {
   URL.revokeObjectURL(url);
 }
 
-export default function Analytics() {
+export default function Analytics({ onMobileMenu }) {
   const [selectedMonth, setSelectedMonth] = useState(currentMonthKey());
   const { transactions } = useTransactions();
   const { categories } = useCategories();
@@ -86,7 +86,7 @@ export default function Analytics() {
 
   return (
     <>
-      <Header eyebrow="ANÁLISES" title="Análises" />
+      <Header eyebrow="ANÁLISES" title="Análises"  onMobileMenu={onMobileMenu} />
       <main className="content">
         <p className="page-lead">
           Todos os números abaixo são calculados a partir dos seus lançamentos reais — nada aqui é estimado ou

@@ -37,7 +37,7 @@ function changeLabel(change) {
   return `${arrow} ${Math.abs(change).toFixed(1)}% vs. mês anterior`;
 }
 
-export default function Dashboard() {
+export default function Dashboard({ onMobileMenu }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(currentMonthKey());
   const { transactions, addTransaction } = useTransactions();
@@ -65,7 +65,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Header eyebrow="VISÃO GERAL" title="Dashboard" onNewTransaction={() => setModalOpen(true)} />
+      <Header eyebrow="VISÃO GERAL" title="Dashboard" onNewTransaction={() => setModalOpen(true)} onMobileMenu={onMobileMenu} />
       <main className="content">
         <div className="month-switcher">
           <button type="button" className="icon-btn small" onClick={goToPreviousMonth} aria-label="Mês anterior">

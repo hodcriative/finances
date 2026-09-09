@@ -18,7 +18,7 @@ const PERIOD_OPTIONS = [
   { value: monthKeyOffset(1), label: `${shortMonthLabel(monthKeyOffset(1))} (mês passado)` },
 ];
 
-export default function Transactions() {
+export default function Transactions({ onMobileMenu }) {
   const { transactions, addTransaction, editTransaction, deleteTransaction } = useTransactions();
   const { categories } = useCategories();
   const { accounts } = useAccounts();
@@ -82,7 +82,7 @@ export default function Transactions() {
         search={search}
         onSearchChange={setSearch}
         searchPlaceholder="Buscar por descrição..."
-      />
+       onMobileMenu={onMobileMenu}/>
       <main className="content">
         <section className="stats-grid" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
           <div className="stat-card income">

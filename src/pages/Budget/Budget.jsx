@@ -51,7 +51,7 @@ function TotalLimitForm({ initialValue, onSubmit, onCancel }) {
   );
 }
 
-export default function Budget() {
+export default function Budget({ onMobileMenu }) {
   const [selectedMonth, setSelectedMonth] = useState(currentMonthKey());
   const { transactions } = useTransactions();
   const { categories } = useCategories();
@@ -96,7 +96,7 @@ export default function Budget() {
 
   return (
     <>
-      <Header eyebrow="ORÇAMENTO" title="Orçamento" />
+      <Header eyebrow="ORÇAMENTO" title="Orçamento"  onMobileMenu={onMobileMenu} />
       <main className="content">
         <p className="page-lead">
           Defina limites de referência para o mês. Os valores utilizados são sempre calculados a partir das suas

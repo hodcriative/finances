@@ -68,10 +68,10 @@ const FAQ_SECTIONS = [
   },
 ];
 
-export default function Help() {
+export default function Help({ onMobileMenu }) {
   return (
     <>
-      <Header eyebrow="AJUDA" title="Central de ajuda" />
+      <Header eyebrow="AJUDA" title="Central de ajuda"  onMobileMenu={onMobileMenu} />
       <main className="content">
         <p className="page-lead">
           Perguntas frequentes sobre como o FINANCE funciona hoje. Se algo não estiver aqui, é provável que ainda não

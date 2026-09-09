@@ -9,7 +9,7 @@ const SEVERITY_ICON = { high: "⚠️", medium: "⏰", success: "✅" };
 // Alertas são sempre derivados dos dados já cadastrados (orçamento e
 // metas) — nenhum alerta é armazenado ou gerado por movimentação real
 // (CLAUDE.md).
-export default function Alerts() {
+export default function Alerts({ onMobileMenu }) {
   const { preferences } = usePreferences();
   const { monthKey, alerts } = useAlerts({
     includeBudget: preferences.notifyBudgetAlerts,
@@ -19,7 +19,7 @@ export default function Alerts() {
 
   return (
     <>
-      <Header eyebrow="ALERTAS" title="Alertas" />
+      <Header eyebrow="ALERTAS" title="Alertas"  onMobileMenu={onMobileMenu} />
       <main className="content">
         <p className="page-lead">
           Alertas calculados a partir do orçamento e das metas de {monthYearLabel(monthKey)} — nenhum dado extra é

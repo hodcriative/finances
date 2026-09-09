@@ -8,7 +8,7 @@ import GoalRow from "../../components/finance/GoalRow";
 import GoalContributionForm from "../../components/finance/GoalContributionForm";
 import { useGoals } from "../../hooks/useGoals";
 
-export default function Goals() {
+export default function Goals({ onMobileMenu }) {
   const { goals, addGoal, editGoal, contributeToGoal, setGoalStatus, deleteGoal } = useGoals();
   const [modalState, setModalState] = useState(null); // { type: "form" | "contribute", mode?, goal? }
 
@@ -41,7 +41,7 @@ export default function Goals() {
 
   return (
     <>
-      <Header eyebrow="METAS" title="Metas financeiras" />
+      <Header eyebrow="METAS" title="Metas financeiras"  onMobileMenu={onMobileMenu} />
       <main className="content">
         <p className="page-lead">
           Metas são planos pessoais de organização financeira. Registrar um aporte apenas atualiza o valor guardado
