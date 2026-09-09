@@ -30,3 +30,6 @@ pnpm-debug.log*
 # Sistema operacional
 .DS_Store
 Thumbs.db
+
+# Banco de dados local do servidor (Fase 6)
+server/data/*.sqlite
