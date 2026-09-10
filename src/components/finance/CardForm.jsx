@@ -47,7 +47,7 @@ export default function CardForm({ initialValue, onSubmit, onCancel }) {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <p className="field-hint">
-        Cartão representativo — os dados são preenchidos e atualizados por você. A fatura atual é calculada
+        Cartão representativo, os dados são preenchidos e atualizados por você. A fatura atual é calculada
         automaticamente a partir das compras cadastradas na aba Compras; nenhuma cobrança real é processada por
         esta plataforma.
       </p>

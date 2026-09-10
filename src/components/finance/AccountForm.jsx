@@ -41,7 +41,7 @@ export default function AccountForm({ initialValue, onSubmit, onCancel }) {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <p className="field-hint">
-        Registro organizacional — não conecta com seu banco nem movimenta dinheiro real.
+        Registro organizacional não conecta com seu banco nem movimenta dinheiro real.
       </p>
 
       <label>

@@ -89,7 +89,7 @@ export default function Analytics({ onMobileMenu }) {
       <Header eyebrow="ANÁLISES" title="Análises"  onMobileMenu={onMobileMenu} />
       <main className="content">
         <p className="page-lead">
-          Todos os números abaixo são calculados a partir dos seus lançamentos reais — nada aqui é estimado ou
+          Todos os números abaixo são calculados a partir dos seus lançamentos reais, nada aqui é estimado ou
           projetado automaticamente.
         </p>
 

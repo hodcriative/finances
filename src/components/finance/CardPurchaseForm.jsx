@@ -51,7 +51,7 @@ export default function CardPurchaseForm({ cards, initialValue, defaultCardId, o
   return (
     <form onSubmit={handleSubmit} noValidate>
       <p className="field-hint">
-        Compra representativa — organiza quanto dessa compra ainda impacta a mensalidade do cartão. Não é uma
+        Compra representativa, organiza quanto dessa compra ainda impacta a mensalidade do cartão. Não é uma
         cobrança real e não altera a fatura atual informada manualmente.
       </p>
 

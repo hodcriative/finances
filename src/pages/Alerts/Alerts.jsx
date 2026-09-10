@@ -29,7 +29,7 @@ export default function Alerts({ onMobileMenu }) {
       <main className="content">
         <p className="page-lead">
           Alertas calculados a partir do orçamento, das metas e das receitas x despesas de {monthYearLabel(monthKey)}{" "}
-          — nenhum dado extra é armazenado, tudo é recalculado a partir dos seus lançamentos, limites e metas.
+          , nenhum dado extra é armazenado, tudo é recalculado a partir dos seus lançamentos, limites e metas.
         </p>
         {someHidden && (
           <p className="page-lead" style={{ marginTop: -10 }}>
