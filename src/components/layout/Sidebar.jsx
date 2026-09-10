@@ -21,6 +21,7 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
   const { alerts } = useAlerts({
     includeBudget: preferences.notifyBudgetAlerts,
     includeGoals: preferences.notifyGoalAlerts,
+    includeIncomeExpense: preferences.notifyIncomeExpenseAlerts,
   });
   const alertsCount = alerts.length;
   const initial = preferences.name?.trim()?.[0]?.toUpperCase() || "F";

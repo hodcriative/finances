@@ -33,5 +33,7 @@ export function update(patch) {
   if (patch.theme !== undefined) next.theme = patch.theme === "dark" ? "dark" : "light";
   if (patch.notifyBudgetAlerts !== undefined) next.notifyBudgetAlerts = Boolean(patch.notifyBudgetAlerts);
   if (patch.notifyGoalAlerts !== undefined) next.notifyGoalAlerts = Boolean(patch.notifyGoalAlerts);
+  if (patch.notifyIncomeExpenseAlerts !== undefined)
+    next.notifyIncomeExpenseAlerts = Boolean(patch.notifyIncomeExpenseAlerts);
   return persist(next);
 }

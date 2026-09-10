@@ -114,6 +114,14 @@ export default function Settings({ onMobileMenu }) {
                 />
                 Mostrar alertas de metas (concluída ou perto do prazo)
               </label>
+              <label className="settings-checkbox">
+                <input
+                  type="checkbox"
+                  checked={preferences.notifyIncomeExpenseAlerts}
+                  onChange={(e) => updatePreferences({ notifyIncomeExpenseAlerts: e.target.checked })}
+                />
+                Mostrar alertas de receitas x despesas (despesas perto ou acima das receitas do mês)
+              </label>
             </div>
             <p className="field-hint" style={{ marginTop: 16, marginBottom: 0 }}>
               Essas preferências controlam o que aparece na página Alertas e o indicador de notificações no menu

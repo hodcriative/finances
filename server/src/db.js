@@ -29,7 +29,8 @@ CREATE TABLE IF NOT EXISTS preferences (
   name TEXT NOT NULL,
   theme TEXT NOT NULL DEFAULT 'light',
   notify_budget_alerts INTEGER NOT NULL DEFAULT 1,
-  notify_goal_alerts INTEGER NOT NULL DEFAULT 1
+  notify_goal_alerts INTEGER NOT NULL DEFAULT 1,
+  notify_income_expense_alerts INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS categories (
@@ -121,3 +122,14 @@ CREATE TABLE IF NOT EXISTS sessions (
   expires_at TEXT NOT NULL
 );
 `);
+
+// Migração leve para bancos criados antes da coluna existir — `CREATE
+// TABLE IF NOT EXISTS` acima não altera tabelas já existentes. Sem
+// dependência externa de migração nesta fase de protótipo (mesmo
+// espírito de db.js), então o ajuste é feito aqui, ignorando o erro
+// esperado quando a coluna já existe.
+try {
+  db.exec("ALTER TABLE preferences ADD COLUMN notify_income_expense_alerts INTEGER NOT NULL DEFAULT 1;");
+} catch {
+  // Coluna já existe — nada a fazer.
+}

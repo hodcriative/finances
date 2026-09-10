@@ -6,33 +6,34 @@ import { monthYearLabel } from "../../utils/dates";
 
 const SEVERITY_ICON = { high: "⚠️", medium: "⏰", success: "✅" };
 
-// Alertas são sempre derivados dos dados já cadastrados (orçamento e
-// metas) — nenhum alerta é armazenado ou gerado por movimentação real
-// (CLAUDE.md).
+// Alertas são sempre derivados dos dados já cadastrados (orçamento,
+// metas e o total de receitas x despesas do mês) — nenhum alerta é
+// armazenado ou gerado por movimentação real (CLAUDE.md).
 export default function Alerts({ onMobileMenu }) {
   const { preferences } = usePreferences();
   const { monthKey, alerts } = useAlerts({
     includeBudget: preferences.notifyBudgetAlerts,
     includeGoals: preferences.notifyGoalAlerts,
+    includeIncomeExpense: preferences.notifyIncomeExpenseAlerts,
   });
-  const someHidden = !preferences.notifyBudgetAlerts || !preferences.notifyGoalAlerts;
+  const hiddenTypes = [
+    !preferences.notifyBudgetAlerts && "de orçamento",
+    !preferences.notifyGoalAlerts && "de metas",
+    !preferences.notifyIncomeExpenseAlerts && "de receitas x despesas",
+  ].filter(Boolean);
+  const someHidden = hiddenTypes.length > 0;
 
   return (
     <>
       <Header eyebrow="ALERTAS" title="Alertas"  onMobileMenu={onMobileMenu} />
       <main className="content">
         <p className="page-lead">
-          Alertas calculados a partir do orçamento e das metas de {monthYearLabel(monthKey)} — nenhum dado extra é
-          armazenado, tudo é recalculado a partir dos seus lançamentos, limites e metas.
+          Alertas calculados a partir do orçamento, das metas e das receitas x despesas de {monthYearLabel(monthKey)}{" "}
+          — nenhum dado extra é armazenado, tudo é recalculado a partir dos seus lançamentos, limites e metas.
         </p>
         {someHidden && (
           <p className="page-lead" style={{ marginTop: -10 }}>
-            {!preferences.notifyBudgetAlerts && !preferences.notifyGoalAlerts
-              ? "Alertas de orçamento e de metas estão ocultos nas suas preferências."
-              : !preferences.notifyBudgetAlerts
-              ? "Alertas de orçamento estão ocultos nas suas preferências."
-              : "Alertas de metas estão ocultos nas suas preferências."}{" "}
-            Ajuste isso em Configurações.
+            Alertas {hiddenTypes.join(", ")} estão ocultos nas suas preferências. Ajuste isso em Configurações.
           </p>
         )}
 
@@ -44,7 +45,7 @@ export default function Alerts({ onMobileMenu }) {
             <EmptyState
               icon="🔔"
               title="Nenhum alerta no momento"
-              description="Quando um limite de orçamento for ultrapassado ou uma meta for concluída, os alertas aparecem aqui."
+              description="Quando um limite de orçamento for ultrapassado, uma meta for concluída ou as despesas chegarem perto (ou passarem) das receitas do mês, os alertas aparecem aqui."
             />
           ) : (
             <div className="alert-list">

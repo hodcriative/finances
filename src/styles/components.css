@@ -43,7 +43,7 @@
 .category-list { display: flex; flex-direction: column; gap: 11px; }
 .category-row { display: grid; grid-template-columns: 1fr 34px 65px; align-items: center; gap: 6px; font-size: 10px; }
 .category-name { display: flex; align-items: center; gap: 7px; }
-.category-icon, .transaction-icon, .goal-icon { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; background: #f4f4f7; font-size: 13px; }
+.category-icon, .transaction-icon, .goal-icon { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: #f4f4f7; font-size: 14px; }
 .category-row strong { text-align: right; font-size: 9px; }
 .category-row small { color: var(--muted); text-align: right; font-size: 8px; }
 
@@ -57,14 +57,22 @@
 
 .lower { align-items: start; }
 .transaction-list { padding: 0 20px; }
-.transaction-list.padded { padding: 6px 20px 20px; }
-.transaction-row { display: grid; grid-template-columns: 30px minmax(150px, 1fr) 80px auto; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid #f0f1f4; }
+.transaction-list.padded { padding: 8px 22px 22px; }
+.transaction-row {
+  display: grid;
+  grid-template-columns: 30px minmax(140px, 1fr) 64px 90px 64px;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 2px;
+  border-top: 1px solid #f0f1f4;
+}
 .transaction-row:first-child { border-top: 0; }
+.transaction-info { min-width: 0; }
 .transaction-info strong, .transaction-info small { display: block; }
-.transaction-info strong { font-size: 10px; }
-.transaction-info small, .transaction-date { color: var(--muted); font-size: 8px; margin-top: 3px; }
+.transaction-info strong { font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.transaction-info small, .transaction-date { color: var(--muted); font-size: 9px; margin-top: 3px; }
 .transaction-date { text-align: right; }
-.amount-positive, .amount-negative { font-size: 10px; text-align: right; }
+.amount-positive, .amount-negative { font-size: 11px; text-align: right; white-space: nowrap; }
 .transaction-row-actions { display: flex; gap: 6px; justify-self: end; }
 .new-entry { margin: 8px 20px 18px; width: calc(100% - 40px); height: 36px; border: 1px dashed #d8d9e2; border-radius: 9px; background: #fbfbfd; color: var(--primary); font-weight: 750; font-size: 9px; display: flex; align-items: center; justify-content: center; gap: 6px; }
 

@@ -63,7 +63,7 @@ router.post("/register", (req, res) => {
   );
 
   db.prepare(
-    "INSERT INTO preferences (user_id, name, theme, notify_budget_alerts, notify_goal_alerts) VALUES (?, ?, 'light', 1, 1)"
+    "INSERT INTO preferences (user_id, name, theme, notify_budget_alerts, notify_goal_alerts, notify_income_expense_alerts) VALUES (?, ?, 'light', 1, 1, 1)"
   ).run(userId, name.trim());
 
   const insertCategory = db.prepare(

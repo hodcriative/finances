@@ -42,7 +42,7 @@ usadas hoje como seed do `localStorage` (`src/data/mockData.js`).
 | POST | `/api/auth/logout` | revoga a sessão do token em uso |
 | POST | `/api/auth/logout-all` | revoga todas as sessões do usuário |
 | GET | `/api/auth/me` | dados do usuário logado |
-| GET/PATCH | `/api/preferences` | preferências (nome, tema, notificações) |
+| GET/PATCH | `/api/preferences` | preferências (nome, tema, notificações de orçamento/metas/receitas x despesas) |
 | GET/POST | `/api/categories` | listar/criar categoria |
 | PATCH/DELETE | `/api/categories/:id` | editar/excluir categoria |
 | GET/POST | `/api/accounts` | listar/criar conta ou cartão (`kind: "account"\|"card"`) |

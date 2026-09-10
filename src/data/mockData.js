@@ -7,6 +7,7 @@ export const preferences = {
   theme: "light",
   notifyBudgetAlerts: true,
   notifyGoalAlerts: true,
+  notifyIncomeExpenseAlerts: true,
 };
 
 export const categories = [

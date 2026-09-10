@@ -28,7 +28,7 @@
   .header-actions .primary-btn { font-size: 0; }
   .header-actions .primary-btn svg { margin: 0; }
   .category-body { grid-template-columns: 1fr; }
-  .transaction-row { grid-template-columns: 30px minmax(100px, 1fr) auto; }
+  .transaction-row { grid-template-columns: 30px minmax(100px, 1fr) 76px 56px; gap: 10px; }
   .transaction-date { display: none; }
 }
 
@@ -168,7 +168,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .category-list { width: 100%; }
   .chart { padding-left: 12px; padding-right: 12px; height: 205px; }
   .transaction-list, .transaction-list.padded { padding-left: 15px; padding-right: 15px; }
-  .transaction-row { grid-template-columns: 30px minmax(0,1fr) auto; gap: 8px; }
+  .transaction-row { grid-template-columns: 30px minmax(0,1fr) 72px 56px; gap: 8px; }
   .transaction-date { display: none; }
   .form-grid-2 { grid-template-columns: 1fr; }
   .filters-bar { padding: 12px 15px; }

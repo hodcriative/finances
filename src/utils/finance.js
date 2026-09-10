@@ -2,6 +2,8 @@
 // Regra do domínio: Dashboard, Transações e Análises devem ler destes
 // helpers em vez de recalcular totais de forma independente em cada página.
 
+import { formatCurrency } from "./currency";
+
 export function getPeriodTransactions(transactions, monthKey) {
   if (!monthKey || monthKey === "all") return transactions;
   return transactions.filter((t) => t.date?.startsWith(monthKey));
@@ -188,6 +190,54 @@ export function getGoalAlerts(goals) {
         });
       }
     });
+
+  return alerts;
+}
+
+// Alerta derivado de receitas x despesas do período — mesmo espírito de
+// getBudgetAlerts (nada é armazenado, recalculado a cada acesso a partir
+// dos lançamentos já cadastrados). Diferente do orçamento (limite
+// definido manualmente pelo usuário), aqui o "limite" é a própria receita
+// do mês: avisa quando a despesa está perto de alcançar a receita
+// (>= 80%, mesmo corte de "atenção" usado no orçamento) ou já ultrapassou.
+export function getIncomeExpenseAlerts(transactions, monthKey) {
+  const periodTransactions = getPeriodTransactions(transactions, monthKey);
+  const income = getTotalIncome(periodTransactions);
+  const expenses = getTotalExpenses(periodTransactions);
+  const alerts = [];
+
+  if (expenses <= 0) return alerts;
+
+  if (income <= 0) {
+    alerts.push({
+      id: "income-expense-no-income",
+      type: "income-expense",
+      severity: "high",
+      title: "Despesas sem receita registrada no mês",
+      message: `Você já lançou ${formatCurrency(expenses)} em despesas neste mês, mas nenhuma receita foi registrada no período.`,
+    });
+    return alerts;
+  }
+
+  const percent = Math.min(999, Math.round((expenses / income) * 100));
+
+  if (expenses > income) {
+    alerts.push({
+      id: "income-expense-exceeded",
+      type: "income-expense",
+      severity: "high",
+      title: "Despesas do mês ultrapassaram as receitas",
+      message: `As despesas já somam ${formatCurrency(expenses)} (${percent}% das receitas de ${formatCurrency(income)}) neste mês.`,
+    });
+  } else if (percent >= 80) {
+    alerts.push({
+      id: "income-expense-near",
+      type: "income-expense",
+      severity: "medium",
+      title: "Despesas perto do valor das receitas do mês",
+      message: `As despesas já estão em ${percent}% das receitas registradas neste mês (${formatCurrency(expenses)} de ${formatCurrency(income)}).`,
+    });
+  }
 
   return alerts;
 }

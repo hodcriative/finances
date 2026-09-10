@@ -9,7 +9,13 @@ import { preferences as preferencesService } from "../services/domainApiService"
 const PreferencesContext = createContext(null);
 
 export function PreferencesProvider({ children }) {
-  const [preferences, setPreferences] = useState({ name: "", theme: "light", notifyBudgetAlerts: true, notifyGoalAlerts: true });
+  const [preferences, setPreferences] = useState({
+    name: "",
+    theme: "light",
+    notifyBudgetAlerts: true,
+    notifyGoalAlerts: true,
+    notifyIncomeExpenseAlerts: true,
+  });
 
   useEffect(() => {
     preferencesService.get().then(setPreferences).catch(console.error);
