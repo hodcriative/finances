@@ -8,8 +8,9 @@ import TransactionForm from "../../components/finance/TransactionForm";
 import { useTransactions } from "../../hooks/useTransactions";
 import { useCategories } from "../../hooks/useCategories";
 import { useAccounts } from "../../hooks/useAccounts";
+import { useGoals } from "../../hooks/useGoals";
 import { formatCurrency } from "../../utils/currency";
-import { getTotalIncome, getTotalExpenses } from "../../utils/finance";
+import { getBalance, getTotalIncome, getTotalExpenses } from "../../utils/finance";
 import { currentMonthKey, monthKeyOffset, shortMonthLabel } from "../../utils/dates";
 
 const PERIOD_OPTIONS = [
@@ -22,6 +23,7 @@ export default function Transactions({ onMobileMenu }) {
   const { transactions, addTransaction, editTransaction, deleteTransaction } = useTransactions();
   const { categories } = useCategories();
   const { accounts } = useAccounts();
+  const { goals } = useGoals();
   const [search, setSearch] = useState("");
   const [period, setPeriod] = useState("all");
   const [type, setType] = useState("all");
@@ -56,6 +58,8 @@ export default function Transactions({ onMobileMenu }) {
 
   const totalIncome = getTotalIncome(filtered);
   const totalExpenses = getTotalExpenses(filtered);
+  const balancePeriod = period === "all" ? currentMonthKey() : period;
+  const monthlyBalance = getBalance(transactions.filter((transaction) => transaction.date?.startsWith(balancePeriod)));
 
   async function handleSubmit(data) {
     if (modalState?.mode === "edit") {
@@ -84,7 +88,12 @@ export default function Transactions({ onMobileMenu }) {
         searchPlaceholder="Buscar por descrição..."
        onMobileMenu={onMobileMenu}/>
       <main className="content">
-        <section className="stats-grid" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
+        <section className="stats-grid transactions-stats">
+          <div className="stat-card balance">
+            <div className="stat-top"><span>Saldo do mês</span><span className="stat-icon">◉</span></div>
+            <strong>{formatCurrency(monthlyBalance)}</strong>
+            <small>{shortMonthLabel(balancePeriod)}</small>
+          </div>
           <div className="stat-card income">
             <div className="stat-top"><span>Receitas no filtro</span><span className="stat-icon">↑</span></div>
             <strong>{formatCurrency(totalIncome)}</strong>
@@ -154,6 +163,7 @@ export default function Transactions({ onMobileMenu }) {
                   transaction={t}
                   category={categories.find((c) => c.id === t.categoryId)}
                   account={accounts.find((a) => a.id === t.accountId)}
+                  goal={goals.find((g) => g.id === t.goalId)}
                   onEdit={(tx) => setModalState({ mode: "edit", transaction: tx })}
                   onDelete={handleDelete}
                 />
@@ -172,6 +182,7 @@ export default function Transactions({ onMobileMenu }) {
           <TransactionForm
             categories={categories}
             accounts={accounts}
+            goals={goals}
             initialValue={modalState.mode === "edit" ? modalState.transaction : undefined}
             onSubmit={handleSubmit}
             onCancel={() => setModalState(null)}

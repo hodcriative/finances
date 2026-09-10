@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { HashRouter } from "react-router-dom";
 import App from "./app/App";
 import "./styles/index.css";
+import "./styles/refinement.css";
 
 // HashRouter em vez de BrowserRouter: GitHub Pages é um host estático puro,
 // sem rewrite de servidor para SPA — com HashRouter, recarregar qualquer

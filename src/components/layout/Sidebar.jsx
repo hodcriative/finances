@@ -25,20 +25,33 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
   });
   const alertsCount = alerts.length;
   const initial = preferences.name?.trim()?.[0]?.toUpperCase() || "F";
+  // No celular, a sidebar vira uma gaveta: mesmo que o modo compacto esteja
+  // salvo para desktop, os nomes precisam aparecer ao abrir o menu.
+  const isCompact = collapsed && !mobileOpen;
+
+  function toggleSidebar() {
+    if (window.innerWidth <= 850) {
+      setMobileOpen(false);
+      return;
+    }
+    const nextCollapsed = !collapsed;
+    localStorage.setItem("finance:desktop-sidebar", nextCollapsed ? "compact" : "expanded");
+    setCollapsed(nextCollapsed);
+  }
 
   return (
-    <aside className={`sidebar ${collapsed ? "collapsed" : ""} ${mobileOpen ? "mobile-open" : ""}`}>
+    <aside className={`sidebar ${isCompact ? "collapsed" : ""} ${mobileOpen ? "mobile-open" : ""}`}>
       <div className="brand">
         <div className="brand-mark">F</div>
-        {!collapsed && <div><strong>FINANCE</strong><span>Seu dinheiro, organizado.</span></div>}
+        {!isCompact && <div><strong>FINANCE</strong><span>Seu dinheiro, organizado.</span></div>}
       </div>
 
-      <button className="collapse-btn" onClick={() => { if (window.innerWidth <= 850) setMobileOpen(false); else setCollapsed(!collapsed); }} aria-label="Alternar menu" title="Alternar menu">
-        {collapsed ? <Menu size={18} /> : <X size={18} />}
+      <button className="collapse-btn" onClick={toggleSidebar} aria-label={isCompact ? "Expandir menu" : "Recolher menu"} title={isCompact ? "Expandir menu" : "Recolher menu"}>
+        {isCompact ? <Menu size={18} /> : <X size={18} />}
       </button>
 
       <nav className="nav">
-        <div className="nav-label">{!collapsed && "PRINCIPAL"}</div>
+        <div className="nav-label">{!isCompact && "PRINCIPAL"}</div>
         {NAV_ITEMS.map(([to, label, Icon]) => (
           <NavLink
             key={to}
@@ -47,14 +60,14 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
             className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
           >
             <Icon size={19} />
-            {!collapsed && <span>{label}</span>}
+            {!isCompact && <span>{label}</span>}
           </NavLink>
         ))}
 
-        <div className="nav-label nav-spacer">{!collapsed && "GERENCIAMENTO"}</div>
+        <div className="nav-label nav-spacer">{!isCompact && "GERENCIAMENTO"}</div>
         <NavLink to="/alertas" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}>
           <Bell size={19} />
-          {!collapsed && (
+          {!isCompact && (
             <>
               <span>Alertas</span>
               {alertsCount > 0 && <b className="notification-dot">{alertsCount}</b>}
@@ -65,12 +78,12 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
 
       <div className="sidebar-bottom">
         <NavLink to="/configuracoes" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}>
-          <Settings size={19} />{!collapsed && <span>Configurações</span>}
+          <Settings size={19} />{!isCompact && <span>Configurações</span>}
         </NavLink>
         <NavLink to="/ajuda" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}>
-          <CircleHelp size={19} />{!collapsed && <span>Ajuda</span>}
+          <CircleHelp size={19} />{!isCompact && <span>Ajuda</span>}
         </NavLink>
-        {!collapsed && (
+        {!isCompact && (
           <div className="profile-mini" title="Gerencie sua conta em Configurações">
             <div className="avatar">{initial}</div>
             <div><strong>{preferences.name || "Seu perfil"}</strong><span>Conta e preferências</span></div>

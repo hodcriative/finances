@@ -56,8 +56,8 @@ export default function GoalForm({ initialValue, onSubmit, onCancel }) {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <p className="field-hint">
-        Metas são planos de organização pessoal. O valor guardado é preenchido por você a qualquer momento — nenhuma
-        transferência real é feita entre contas.
+        Metas são planos de organização pessoal. O valor guardado pode ser ajustado por você ou por despesas separadas
+        para a meta — nenhuma transferência real é feita entre contas.
       </p>
 
       <label>

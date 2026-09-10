@@ -2,14 +2,14 @@ import { Pencil, Trash2 } from "lucide-react";
 import { formatCurrency } from "../../utils/currency";
 import { formatRelativeDate } from "../../utils/dates";
 
-export default function TransactionRow({ transaction, category, account, onEdit, onDelete }) {
+export default function TransactionRow({ transaction, category, account, goal, onEdit, onDelete }) {
   const isIncome = transaction.type === "income";
   return (
     <div className="transaction-row">
       <span className="transaction-icon">{category?.icon || "•"}</span>
       <div className="transaction-info">
         <strong>{transaction.description}</strong>
-        <small>{category?.name || "Sem categoria"}{account ? ` · ${account.name}` : ""}</small>
+        <small>{category?.name || "Sem categoria"}{account ? ` · ${account.name}` : ""}{goal ? ` · Meta: ${goal.title}` : ""}</small>
       </div>
       <small className="transaction-date">{formatRelativeDate(transaction.date)}</small>
       <strong className={isIncome ? "amount-positive" : "amount-negative"}>

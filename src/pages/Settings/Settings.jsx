@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LogOut, Monitor, Smartphone, Save } from "lucide-react";
 import Header from "../../components/layout/Header";
 import { usePreferences } from "../../app/PreferencesContext";
 import { useAuth } from "../../app/AuthContext";
+import { useLocation } from "react-router-dom";
 
 const THEME_OPTIONS = [
   { value: "light", label: "Claro" },
@@ -26,6 +27,7 @@ const FUTURE_ITEMS = [
 ];
 
 export default function Settings({ onMobileMenu }) {
+  const location = useLocation();
   const { preferences, updatePreferences } = usePreferences();
   const { logout } = useAuth();
   const [desktopCompact, setDesktopCompact] = useState(
@@ -33,6 +35,14 @@ export default function Settings({ onMobileMenu }) {
   );
   const [name, setName] = useState(preferences.name);
   const [nameError, setNameError] = useState("");
+
+  useEffect(() => {
+    if (location.hash !== "#perfil") return;
+    const element = document.getElementById("perfil");
+    if (element) {
+      requestAnimationFrame(() => element.scrollIntoView({ behavior: "smooth", block: "start" }));
+    }
+  }, [location.hash]);
 
   function handleNameSubmit(e) {
     e.preventDefault();
@@ -53,7 +63,7 @@ export default function Settings({ onMobileMenu }) {
           depende da Fase 6, de persistência/autenticação, que ainda não foi iniciada).
         </p>
 
-        <section className="panel">
+        <section className="panel" id="perfil">
           <div className="panel-heading">
             <div><h2>Perfil</h2><p>Como seu nome aparece no menu lateral e no topo das páginas</p></div>
           </div>

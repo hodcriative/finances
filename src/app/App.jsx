@@ -21,7 +21,12 @@ function AppContent() {
 
   useEffect(() => {
     const syncViewport = () => {
-      if (window.innerWidth <= 850) setCollapsed(true);
+      if (window.innerWidth <= 850) {
+        setCollapsed(true);
+      } else {
+        setMobileOpen(false);
+        setCollapsed(localStorage.getItem("finance:desktop-sidebar") === "compact");
+      }
     };
     syncViewport();
     window.addEventListener("resize", syncViewport);

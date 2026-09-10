@@ -97,6 +97,8 @@ router.post("/:id/contribute", (req, res) => {
 router.delete("/:id", (req, res) => {
   const current = db.prepare("SELECT id FROM goals WHERE id = ? AND user_id = ?").get(req.params.id, req.userId);
   if (!current) return res.status(404).json({ error: "Meta não encontrada." });
+  // Mantém o lançamento no histórico; apenas remove o vínculo com a meta excluída.
+  db.prepare("UPDATE transactions SET goal_id = NULL WHERE goal_id = ? AND user_id = ?").run(current.id, req.userId);
   db.prepare("DELETE FROM goals WHERE id = ?").run(current.id);
   res.status(204).end();
 });

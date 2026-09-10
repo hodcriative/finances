@@ -8,13 +8,14 @@ function toAmountText(value) {
   return String(value).replace(".", ",");
 }
 
-export default function TransactionForm({ categories, accounts, initialValue, onSubmit, onCancel }) {
+export default function TransactionForm({ categories, accounts, goals, initialValue, onSubmit, onCancel }) {
   const isEditing = Boolean(initialValue?.id);
   const [type, setType] = useState(initialValue?.type || "expense");
   const [amount, setAmount] = useState(toAmountText(initialValue?.amount));
   const [description, setDescription] = useState(initialValue?.description || "");
   const [categoryId, setCategoryId] = useState(initialValue?.categoryId || "");
   const [accountId, setAccountId] = useState(initialValue?.accountId || "");
+  const [goalId, setGoalId] = useState(initialValue?.goalId || "");
   const [date, setDate] = useState(initialValue?.date || todayIso());
   const [notes, setNotes] = useState(initialValue?.notes || "");
   const [errors, setErrors] = useState({});
@@ -60,6 +61,7 @@ export default function TransactionForm({ categories, accounts, initialValue, on
       description: description.trim(),
       categoryId,
       accountId: accountId || null,
+      goalId: type === "expense" ? goalId || null : null,
       date,
       notes: notes.trim(),
     });
@@ -90,7 +92,7 @@ export default function TransactionForm({ categories, accounts, initialValue, on
         <button
           type="button"
           className={type === "expense" ? "selected expense-btn" : ""}
-          onClick={() => { setType("expense"); setCategoryId(""); }}
+          onClick={() => { setType("expense"); setCategoryId(""); setGoalId(""); }}
         >
           ↓ Despesa
         </button>
@@ -106,6 +108,18 @@ export default function TransactionForm({ categories, accounts, initialValue, on
         </select>
       </label>
       {errors.categoryId && <p className="field-error">{errors.categoryId}</p>}
+
+      {type === "expense" && (
+        <label>
+          Separar para uma meta <span className="optional">(opcional)</span>
+          <select value={goalId} onChange={(e) => setGoalId(e.target.value)}>
+            <option value="">Não separar para uma meta</option>
+            {goals.filter((goal) => goal.status !== "completed" || goal.id === goalId).map((goal) => (
+              <option key={goal.id} value={goal.id}>{goal.icon} {goal.title}</option>
+            ))}
+          </select>
+        </label>
+      )}
 
       <label>
         Conta ou cartão <span className="optional">(opcional)</span>

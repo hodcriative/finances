@@ -32,6 +32,15 @@ export function getSavingsRate(transactions) {
   return ((income - expenses) / income) * 100;
 }
 
+// Valores separados do saldo disponível para uma meta/cofre. Uma reserva é
+// lançada como despesa com goalId, portanto não se confunde com receitas nem
+// com gastos comuns do mês.
+export function getGoalContributions(transactions) {
+  return transactions
+    .filter((t) => t.type === "expense" && t.goalId)
+    .reduce((sum, t) => sum + Number(t.amount || 0), 0);
+}
+
 export function getExpensesByCategory(transactions, categories) {
   const expenses = transactions.filter((t) => t.type === "expense");
   const total = expenses.reduce((sum, t) => sum + Number(t.amount || 0), 0);

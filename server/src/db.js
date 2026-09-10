@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS transactions (
   description TEXT NOT NULL,
   category_id TEXT,
   account_id TEXT,
+  goal_id TEXT,
   date TEXT NOT NULL,
   notes TEXT,
   created_at TEXT NOT NULL,
@@ -130,6 +131,12 @@ CREATE TABLE IF NOT EXISTS sessions (
 // esperado quando a coluna já existe.
 try {
   db.exec("ALTER TABLE preferences ADD COLUMN notify_income_expense_alerts INTEGER NOT NULL DEFAULT 1;");
+} catch {
+  // Coluna já existe — nada a fazer.
+}
+
+try {
+  db.exec("ALTER TABLE transactions ADD COLUMN goal_id TEXT;");
 } catch {
   // Coluna já existe — nada a fazer.
 }

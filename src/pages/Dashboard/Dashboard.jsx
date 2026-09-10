@@ -86,7 +86,12 @@ export default function Dashboard({ onMobileMenu }) {
           <StatCard label="Saldo do mês" value={formatCurrency(summary.balance)} meta={changeLabel(summary.incomeChange)} type="balance" />
           <StatCard label="Receitas" value={formatCurrency(summary.income)} meta={changeLabel(summary.incomeChange)} type="income" />
           <StatCard label="Despesas" value={formatCurrency(summary.expenses)} meta={changeLabel(summary.expensesChange !== null ? -summary.expensesChange : null)} type="expense" />
-          <StatCard label="Economia do mês" value={`${summary.savingsRate.toFixed(1)}%`} meta="da receita do mês" type="saving" />
+          <StatCard
+            label="Economia do mês"
+            value={formatCurrency(summary.goalContributions)}
+            meta={summary.goalContributions > 0 ? `${summary.goalContributionRate.toFixed(1)}% da receita separado em cofres` : "Nenhum valor separado em cofres"}
+            type="saving"
+          />
         </section>
 
         <div className="main-grid">
@@ -124,6 +129,7 @@ export default function Dashboard({ onMobileMenu }) {
                   transaction={t}
                   category={categories.find((c) => c.id === t.categoryId)}
                   account={accounts.find((a) => a.id === t.accountId)}
+                  goal={goals.find((g) => g.id === t.goalId)}
                 />
               ))}
             </div>
@@ -179,7 +185,7 @@ export default function Dashboard({ onMobileMenu }) {
       </main>
       {modalOpen && (
         <Modal eyebrow="NOVO LANÇAMENTO" title="O que aconteceu?" onClose={() => setModalOpen(false)}>
-          <TransactionForm categories={categories} accounts={accounts} onSubmit={handleCreate} onCancel={() => setModalOpen(false)} />
+          <TransactionForm categories={categories} accounts={accounts} goals={goals} onSubmit={handleCreate} onCancel={() => setModalOpen(false)} />
         </Modal>
       )}
     </>

@@ -5,6 +5,7 @@ import {
   getTotalExpenses,
   getBalance,
   getSavingsRate,
+  getGoalContributions,
   getExpensesByCategory,
   getMonthlySeries,
   getBudgetUsage,
@@ -32,6 +33,7 @@ export function useFinanceSummary(transactions, categories, budget, { monthKey: 
     const balance = getBalance(currentMonth);
     const previousIncome = getTotalIncome(previousMonth);
     const previousExpenses = getTotalExpenses(previousMonth);
+    const goalContributions = getGoalContributions(currentMonth);
 
     const percentChange = (current, previous) => {
       if (previous <= 0) return null;
@@ -44,6 +46,8 @@ export function useFinanceSummary(transactions, categories, budget, { monthKey: 
       expenses,
       balance,
       savingsRate: getSavingsRate(currentMonth),
+      goalContributions,
+      goalContributionRate: income > 0 ? (goalContributions / income) * 100 : 0,
       incomeChange: percentChange(income, previousIncome),
       expensesChange: percentChange(expenses, previousExpenses),
       expensesByCategory: getExpensesByCategory(currentMonth, categories),

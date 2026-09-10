@@ -36,7 +36,7 @@ const FAQ_SECTIONS = [
       },
       {
         q: "O que acontece quando registro um aporte em uma meta?",
-        a: "O aporte apenas soma ao valor já guardado da meta — é um registro de planejamento, nunca uma transferência real entre contas ou cartões.",
+        a: "O aporte soma ao valor guardado da meta. Você também pode separar uma despesa para uma meta ao criar o lançamento; nesse caso o valor é atualizado automaticamente e reduz o saldo disponível. Nenhuma das opções transfere dinheiro de verdade entre contas ou cartões.",
       },
     ],
   },

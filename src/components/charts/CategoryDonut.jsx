@@ -3,6 +3,19 @@ import { formatCurrency } from "../../utils/currency";
 const SLICE_COLORS = ["var(--primary)", "#36b995", "#ee756f", "#f1a34c", "#b8bbc6", "#6ce0d6"];
 
 export default function CategoryDonut({ items, total }) {
+  function handleParallax(event) {
+    const box = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - box.left) / box.width - 0.5;
+    const y = (event.clientY - box.top) / box.height - 0.5;
+    event.currentTarget.style.setProperty("--donut-tilt-x", `${-y * 5}deg`);
+    event.currentTarget.style.setProperty("--donut-tilt-y", `${x * 5}deg`);
+  }
+
+  function resetParallax(event) {
+    event.currentTarget.style.removeProperty("--donut-tilt-x");
+    event.currentTarget.style.removeProperty("--donut-tilt-y");
+  }
+
   if (!items.length) {
     return (
       <section className="panel category-panel">
@@ -24,7 +37,7 @@ export default function CategoryDonut({ items, total }) {
   });
 
   return (
-    <section className="panel category-panel">
+    <section className="panel category-panel category-panel--interactive" onMouseMove={handleParallax} onMouseLeave={resetParallax}>
       <div className="panel-heading"><div><h2>Gastos por categoria</h2><p>Onde seu dinheiro foi usado</p></div></div>
       <div className="category-body">
         <div className="donut" style={{ background: `conic-gradient(${stops.join(", ")})` }}>

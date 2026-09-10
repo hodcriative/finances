@@ -44,8 +44,8 @@ export default function Goals({ onMobileMenu }) {
       <Header eyebrow="METAS" title="Metas financeiras"  onMobileMenu={onMobileMenu} />
       <main className="content">
         <p className="page-lead">
-          Metas são planos pessoais de organização financeira. Registrar um aporte apenas atualiza o valor guardado
-          da meta — nenhuma transferência real é feita entre contas.
+          Metas são planos pessoais de organização financeira. Você pode registrar aportes aqui ou separar uma despesa
+          para uma meta ao criar um lançamento; as duas opções atualizam o valor guardado, sem transferência real entre contas.
         </p>
 
         <section className="panel">
